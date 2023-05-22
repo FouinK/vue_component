@@ -9,8 +9,12 @@
 </head>
 <body>
 <div id="root">
-    <div v-if="liked">좋아요 눌럿음</div>
-    <button v-else @click="onClickButton">Like</button>
+    <div>{{first}}곱하기 {{second}} 는 ?</div>
+    <form @submit="onSubmitForm">
+        <input type="number" ref="answer" v-model="value">
+        <button type="submit">입력</button>
+    </form>
+    <div>{{result}}</div>
 </div>
 </body>
 
@@ -18,11 +22,24 @@
     const app = new Vue({
         el: '#root',
         data: {
-            liked: false,
+            first: Math.ceil(Math.random() * 9),
+            second: Math.ceil(Math.random() * 9),
+            value: 1,
+            result: '',
         },
         methods: {
-            onClickButton() {
-                this.liked = !this.liked;
+            onSubmitForm(e) {
+                e.preventDefault();
+                console.log(this.first * this.second, this.first, this.second, this.value)
+                if ((this.first * this.second) === parseInt(this.value)) {
+                    this.result = '정답';
+                    this.first = Math.ceil(Math.random() * 9);
+                    this.second = Math.ceil(Math.random() * 9);
+                    this.$refs.answer.focus();
+                } else {
+                    this.result = '땡';
+                    this.value=''
+                }
             },
         }
     });
